@@ -2,19 +2,177 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>App DevOps - CI/CD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Pipeline | CI/CD Platform</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; text-align: center; padding-top: 80px; }
-        .card { display: inline-block; background: white; padding: 30px 50px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .version { color: #2c7be5; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+            background: #0a0e1a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #1e293b;
+            padding: 18px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        nav .logo { font-weight: 700; font-size: 1.15rem; color: #fff; }
+        nav .logo span { color: #3b82f6; }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        nav a:hover { color: #fff; }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px 80px;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a0e1a 70%);
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: #fff;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+        .hero p { color: #94a3b8; max-width: 600px; margin: 0 auto 28px; font-size: 1.05rem; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 18px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #4ade80;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .badge::before {
+            content: ''; width: 8px; height: 8px;
+            background: #4ade80; border-radius: 50%;
+            box-shadow: 0 0 8px #4ade80;
+        }
+
+        section { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+        section h2 {
+            font-size: 1.6rem; color: #fff; margin-bottom: 10px; text-align: center;
+        }
+        section .subtitle {
+            text-align: center; color: #64748b; margin-bottom: 40px; font-size: 0.95rem;
+        }
+
+        .status-panel {
+            background: #11182a;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+        .status-item .label { color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .status-item .value { color: #fff; font-size: 1.1rem; font-weight: 600; }
+
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 18px;
+        }
+        .stack-card {
+            background: #11182a;
+            border: 1px solid #1e293b;
+            padding: 24px;
+            border-radius: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .stack-card:hover { transform: translateY(-4px); border-color: #3b82f6; }
+        .stack-card h3 { color: #3b82f6; margin-bottom: 8px; font-size: 1.05rem; }
+        .stack-card p { color: #94a3b8; font-size: 0.88rem; }
+
+        .flow {
+            display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center;
+        }
+        .flow-step {
+            background: #11182a; border: 1px solid #1e293b; border-radius: 10px;
+            padding: 16px 22px; color: #cbd5e1; font-size: 0.9rem; font-weight: 600;
+        }
+        .flow-arrow { color: #3b82f6; font-size: 1.2rem; }
+
+        footer {
+            text-align: center; padding: 40px 20px; color: #475569; font-size: 0.85rem;
+            border-top: 1px solid #1e293b; margin-top: 40px;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Pipeline CI/CD - Application de démonstration</h1>
-        <p>Version : <span class="version">{{ version }}</span></p>
-        <p>{{ message }}</p>
-        <p><small>Page générée le {{ current_time }}</small></p>
+    <nav>
+        <div class="logo">DevOps<span>Pipeline</span></div>
+        <ul>
+            <li><a href="#status">Statut</a></li>
+            <li><a href="#stack">Stack</a></li>
+            <li><a href="#pipeline">Pipeline</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Chaîne d'intégration et de déploiement continu</h1>
+        <p>Démonstration d'un pipeline CI/CD automatisé : du commit Git jusqu'au déploiement en production via Docker, Jenkins et Nginx.</p>
+        <span class="badge">Système opérationnel — v{{ version }}</span>
     </div>
+
+    <section id="status">
+        <h2>État du système</h2>
+        <p class="subtitle">Informations générées dynamiquement par le serveur</p>
+        <div class="status-panel">
+            <div class="status-item">
+                <div class="label">Version déployée</div>
+                <div class="value">{{ version }}</div>
+            </div>
+            <div class="status-item">
+                <div class="label">Instance</div>
+                <div class="value">{{ message }}</div>
+            </div>
+            <div class="status-item">
+                <div class="label">Dernière génération</div>
+                <div class="value">{{ current_time }}</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stack">
+        <h2>Stack technique</h2>
+        <p class="subtitle">Les outils utilisés dans cette chaîne CI/CD</p>
+        <div class="stack-grid">
+            {% for tech in tech_stack %}
+            <div class="stack-card">
+                <h3>{{ tech.name }}</h3>
+                <p>{{ tech.role }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="pipeline">
+        <h2>Flux du pipeline</h2>
+        <p class="subtitle">Étapes automatisées à chaque modification du code</p>
+        <div class="flow">
+            <div class="flow-step">Git Push</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Checkout</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Build Docker</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Test</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Déploiement</div>
+        </div>
+    </section>
+
+    <footer>
+        Projet DevOps — Pipeline CI/CD automatisé · {{ current_time }}
+    </footer>
 </body>
 </html>
