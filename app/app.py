@@ -4,18 +4,28 @@ import socket
 
 app = Flask(__name__)
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"
+
+
+TECH_STACK = [
+    {"name": "Flask", "role": "Application web (Python)"},
+    {"name": "Docker", "role": "Conteneurisation"},
+    {"name": "Jenkins", "role": "Intégration / déploiement continu"},
+    {"name": "Nginx", "role": "Reverse proxy"},
+    {"name": "Git", "role": "Gestion de version"},
+]
 
 
 @app.route("/")
 def index():
-    message = f"Application déployée depuis le conteneur {socket.gethostname()}"
+    message = f"Conteneur actif : {socket.gethostname()}"
     current_time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     return render_template(
         "index.html",
         version=APP_VERSION,
         message=message,
         current_time=current_time,
+        tech_stack=TECH_STACK,
     )
 
 
