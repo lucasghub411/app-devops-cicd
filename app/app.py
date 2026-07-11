@@ -4,10 +4,11 @@ import socket
 
 app = Flask(__name__)
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.2.0"
 
 
 TECH_STACK = [
+
     {"name": "Flask", "role": "Application web (Python)"},
     {"name": "Docker", "role": "Conteneurisation"},
     {"name": "Jenkins", "role": "Intégration / déploiement continu"},
